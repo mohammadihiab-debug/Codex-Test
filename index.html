@@ -1,15 +1,172 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f7f6f2" />
-    <meta name="description" content="Everyday essentials. Uncommon style. Discover the RICHKID collection of tees, shirts, polos and trousers." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7f6f2">
+    <meta name="description" content="Everyday essentials. Uncommon style. Discover the RICHKID collection of tees, shirts, polos and trousers.">
     <title>RICHKID — Everyday, elevated.</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="catalog.js"></script>
+    <script defer src="script.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+      <defs>
+        <symbol id="icon-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14m-7-7 7 7 7-7"/></symbol>
+        <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+        <symbol id="icon-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></symbol>
+        <symbol id="icon-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></symbol>
+        <symbol id="icon-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+        <symbol id="icon-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
+        <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+        <symbol id="icon-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+        <symbol id="icon-package" viewBox="0 0 24 24"><path d="m21 8-9 5-9-5m9 5v9m9-14v9l-9 5-9-5V8l9-5 9 5Z"/><path d="m7.5 5.5 9 5"/></symbol>
+        <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+        <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="icon-bag" viewBox="0 0 24 24"><path d="m6 2-3 4v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18M8 10a4 4 0 0 0 8 0"/></symbol>
+        <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6l-1 14H6L5 6M9 6V3h6v3m-5 4v6m4-6v6"/></symbol>
+        <symbol id="icon-truck" viewBox="0 0 24 24"><path d="M1 3h14v13H1zm14 5h4l3 4v4h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+        <symbol id="icon-x" viewBox="0 0 24 24"><path d="m18 6-12 12M6 6l12 12"/></symbol>
+        <symbol id="icon-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></symbol>
+        <symbol id="icon-facebook" viewBox="0 0 24 24"><path d="M15 21v-8h3l1-4h-4V7c0-1 .5-2 2-2h2V1h-3c-4 0-6 2-6 6v2H7v4h3v8"/></symbol>
+        <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+        <symbol id="icon-rotate" viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 2.6 6.4M3 4v7h7"/></symbol>
+        <symbol id="icon-star" viewBox="0 0 24 24"><path d="m12 2 2.2 6.3L20 5l-3.3 5.8L23 13l-6.3 2.2L20 21l-5.8-3.3L12 24l-2.2-6.3L4 21l3.3-5.8L1 13l6.3-2.2L4 5l5.8 3.3L12 2Z"/></symbol>
+      </defs>
+    </svg>
+    <div id="page-content">
+    <a class="skip-link" href="#shop">Skip to products</a>
+    <div class="announcement">
+      <div class="announcement-inner">
+        <span>GOOD STYLE HAS NO LIMITS.</span>
+        <span>Free shipping on orders ৳2,500+ <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span>
+        <span>MADE FOR YOUR EVERYDAY.</span>
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="header-inner">
+        <button class="icon-button mobile-menu" type="button" data-action="menu" aria-label="Open navigation"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-menu"></use></svg></button>
+        <a class="logo" href="#" data-action="home" aria-label="Richkid home">RICHKID<span class="logo-dot">®</span></a>
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <a class="nav-link" href="#shop" data-action="shop">New arrivals <span class="nav-new">NEW</span></a>
+          <a class="nav-link" href="#categories">Collections <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg></a>
+          <a class="nav-link" href="#shop" data-action="shop" data-category="T-Shirts">T-shirts</a>
+          <a class="nav-link" href="#shop" data-action="shop" data-category="Shirts">Shirts</a>
+          <a class="nav-link sale-link" href="#shop" data-action="deals">The good deals</a>
+        </nav>
+        <div class="header-actions">
+          <button class="icon-button" type="button" data-action="search" aria-label="Search products"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg></button>
+          <button class="icon-button saved-header" type="button" id="wishlist-button" data-action="wishlist" aria-label="View wishlist, 0 saved items"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg><span class="saved-indicator" hidden></span></button>
+          <button class="icon-button bag-button" type="button" id="bag-button" data-action="cart" aria-label="Open shopping bag, 0 items"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-bag"></use></svg><span class="bag-count">0</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="New season collection">
+        <div class="hero-content">
+          <p class="eyebrow"><span class="accent-line"></span> THE NEW EVERYDAY COLLECTION</p>
+          <h1>EVERYDAY,<br><span>ELEVATED.</span></h1>
+          <p class="hero-copy">Good fits. Fresh energy. Discover essentials<br class="desktop-break"> that look as good as they feel.</p>
+          <button class="button button-dark" type="button" data-action="shop">Find your next favorite <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></button>
+          <div class="hero-footer"><span class="small-cross"><svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span>YOUR STYLE. YOUR WAY.<br><strong>ALWAYS RICHKID.</strong></span></div>
+        </div>
+        <div class="hero-visual">
+          <img class="hero-image" src="images/hero.jpg" alt="New season relaxed fashion collection" fetchpriority="high">
+          <div class="hero-image-label"><span>LESS EFFORT.<br><strong>MORE YOU.</strong></span><span class="hero-image-number">THE EVERYDAY EDIT</span></div>
+        </div>
+        <div class="hero-sticker" aria-hidden="true"><span>LOOK GOOD</span><span class="sticker-star"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span>FEEL GOOD</span></div>
+      </section>
+
+      <section class="service-strip" aria-label="Shopping benefits">
+        <div class="service-item"><svg class="service-icon" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-truck"></use></svg><div><strong>Delivered to your doorstep</strong><span>All across Bangladesh</span></div></div>
+        <div class="service-item"><svg class="service-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-rotate"></use></svg><div><strong>Not the right fit?</strong><span>Easy 7-day exchanges</span></div></div>
+        <div class="service-item"><svg class="service-icon" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg><div><strong>Shop with confidence</strong><span>Cash on delivery available</span></div></div>
+        <div class="service-item"><svg class="service-icon" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-package"></use></svg><div><strong>Quality in every detail</strong><span>Made to be worn on repeat</span></div></div>
+      </section>
+
+      <section class="section category-section" id="categories" aria-labelledby="category-heading">
+        <div class="section-heading">
+          <div><p class="section-label">BUILD YOUR ROTATION</p><h2 id="category-heading">Your wardrobe. Sorted.</h2></div>
+          <a class="text-link" href="#shop" data-action="shop">Explore all <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a>
+        </div>
+        <div class="category-grid">
+          <button class="category-card" type="button" data-action="shop" data-category="T-Shirts">
+            <img class="category-image" src="images/product-2.png" alt="T-Shirts collection" loading="lazy">
+            <span class="category-overlay"><span><span class="category-count">THE ESSENTIAL EDIT</span><span class="category-title">T-Shirts</span></span><span class="category-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span></span>
+          </button>
+          <button class="category-card" type="button" data-action="shop" data-category="Shirts">
+            <img class="category-image" src="images/product-1.png" alt="Shirts collection" loading="lazy">
+            <span class="category-overlay"><span><span class="category-count">THE ESSENTIAL EDIT</span><span class="category-title">Shirts</span></span><span class="category-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span></span>
+          </button>
+          <button class="category-card" type="button" data-action="shop" data-category="Polos">
+            <img class="category-image" src="images/product-3.png" alt="Polos collection" loading="lazy">
+            <span class="category-overlay"><span><span class="category-count">THE ESSENTIAL EDIT</span><span class="category-title">Polos</span></span><span class="category-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span></span>
+          </button>
+          <button class="category-card" type="button" data-action="shop" data-category="Trousers">
+            <img class="category-image" src="images/product-4.png" alt="Trousers collection" loading="lazy">
+            <span class="category-overlay"><span><span class="category-count">THE ESSENTIAL EDIT</span><span class="category-title">Trousers</span></span><span class="category-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span></span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section shop-section" id="shop" aria-labelledby="collection-heading">
+        <div class="section-heading shop-heading">
+          <div><p class="section-label">FRESH FINDS. GOOD VIBES.</p><h2 id="collection-heading">Meet your new favorites.</h2></div>
+          <span class="collection-count" id="collection-count">12 good-looking essentials</span>
+        </div>
+        <div class="collection-controls">
+          <div class="category-tabs" role="group" aria-label="Filter by category">
+              <button class="category-tab active" type="button" data-action="filter" data-category="All products" aria-pressed="true">All products</button>
+              <button class="category-tab" type="button" data-action="filter" data-category="T-Shirts" aria-pressed="false">T-Shirts</button>
+              <button class="category-tab" type="button" data-action="filter" data-category="Shirts" aria-pressed="false">Shirts</button>
+              <button class="category-tab" type="button" data-action="filter" data-category="Polos" aria-pressed="false">Polos</button>
+              <button class="category-tab" type="button" data-action="filter" data-category="Trousers" aria-pressed="false">Trousers</button>
+          </div>
+          <label class="sort-select" for="sort-products"><span>Sort by:</span><select id="sort-products" aria-label="Sort products"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"></use></svg></label>
+        </div>
+        <div class="saved-filter" id="saved-filter" hidden><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg> Showing your wishlist <button type="button" data-action="clear-wishlist-filter">Show all products <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-x"></use></svg></button></div>
+        <noscript><p class="empty-state">Enable JavaScript to view products, search the collection, save favorites, and use the shopping bag. You can still explore the category photography and shopping benefits on this page.</p></noscript>
+        <div class="product-grid" id="product-grid"></div>
+        <div class="empty-state" id="empty-collection" hidden><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg><h3>A little empty, a lot of possibilities.</h3><p>Tap the heart on something you love to save it here.</p><button class="button button-dark" type="button" data-action="shop">Explore the collection <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></button></div>
+        <div class="collection-footer"><span>Less scrolling. More good fits.</span><button class="text-link" type="button" data-action="back-to-collection">Back to the collection <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-down"></use></svg></button></div>
+      </section>
+
+      <section class="editorial" aria-labelledby="editorial-heading">
+        <div class="editorial-image"><img src="images/editorial.jpg" alt="Relaxed style from the everyday collection" loading="lazy"><span class="editorial-tag">THE RICHKID WAY</span></div>
+        <div class="editorial-content"><p class="section-label">CONFIDENCE COMES STANDARD.</p><h2 id="editorial-heading">NOT JUST A FIT.<br>A FEELING.</h2><p>For the coffee runs. The late nights. The everyday<br class="desktop-break"> moments that become your best memories.<br><br>Wear what feels like you.</p><button class="button button-light" type="button" data-action="shop">Make it your own <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></button><span class="editorial-stamp" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span></div>
+      </section>
+
+      <section class="newsletter" aria-labelledby="newsletter-heading">
+        <div class="newsletter-copy"><p class="section-label">THE INNER CIRCLE</p><h2 id="newsletter-heading">Good fits. First dibs.</h2><p>New drops, special offers, and a little style inspiration. Straight to your inbox.</p></div>
+        <div id="newsletter-signup"><form class="newsletter-form" id="newsletter-form"><label class="input-group"><span class="sr-only">Your email address</span><input type="email" name="email" placeholder="Your email address" autocomplete="email" required maxlength="254"><button aria-label="Join the newsletter" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-right"></use></svg></button></label><span>No spam. Just the good stuff. Unsubscribe anytime.</span></form></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="logo" href="#" data-action="home" aria-label="Richkid home">RICHKID<span class="logo-dot">®</span></a>
+          <p>Everyday essentials.<br>Uncommon style. Always you.</p>
+          <div class="footer-socials"><button type="button" data-action="info" data-info="Contact us" aria-label="Instagram information"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-instagram"></use></svg></button><button type="button" data-action="info" data-info="Contact us" aria-label="Facebook information"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-facebook"></use></svg></button><button type="button" data-action="info" data-info="Contact us" aria-label="Contact information"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-mail"></use></svg></button></div>
+        </div>
+        <div class="footer-links"><h3>THE COLLECTION</h3>
+          <button type="button" data-action="shop" data-category="T-Shirts">T-Shirts</button>
+          <button type="button" data-action="shop" data-category="Shirts">Shirts</button>
+          <button type="button" data-action="shop" data-category="Polos">Polos</button>
+          <button type="button" data-action="shop" data-category="Trousers">Trousers</button>
+        </div>
+        <div class="footer-links"><h3>WE’RE HERE TO HELP</h3><button type="button" data-action="info" data-info="Contact us">Contact us</button><button type="button" data-action="info" data-info="Shipping &amp; delivery">Shipping &amp; delivery</button><button type="button" data-action="info" data-info="Returns &amp; exchanges">Returns &amp; exchanges</button><button type="button" data-action="wishlist">Your wishlist</button></div>
+        <div class="footer-links"><h3>A LITTLE ABOUT US</h3><button type="button" data-action="info" data-info="Our story">Our story</button><button type="button" data-action="info" data-info="Privacy policy">Privacy policy</button><button type="button" data-action="info" data-info="Terms of service">Terms of service</button><span class="footer-location">Dhaka, Bangladesh <span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></span></span></div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="current-year">2026</span> RICHKID. A storefront design concept.</span><span class="footer-signoff">MADE FOR YOUR EVERYDAY. <span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span></span><div class="payment-badges"><span>bKash</span><span>Nagad</span><span>CASH ON DELIVERY</span></div></div>
+    </footer>
+    </div>
+    <div id="modal-root"></div>
+    <div id="toast-root"></div>
   </body>
 </html>
