@@ -3,6 +3,8 @@
   'use strict';
 
   const { products, categories, formatPrice } = window.RichkidCatalog;
+  const config = window.StoreConfig || {};
+  const query = new URLSearchParams(location.search);
   const findProduct = id => products.find(product => product.id === Number(id));
   const escapeHTML = value => String(value).replace(/[&<>"']/g, character => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -35,7 +37,9 @@
   }
 
   const state = {
-    category: 'All products', sort: 'featured', savedOnly: false,
+    category: categories.some(item => item.name === query.get('category')) ? query.get('category') : 'All products',
+    sort: ['price-low', 'price-high', 'name'].includes(query.get('sort')) ? query.get('sort') : 'featured', savedOnly: false,
+    saleOnly: query.get('sale') === '1', deliveryZone: 'dhaka', backend: false, orderingEnabled: false, shipping: config.shipping || { insideDhaka: 80, outsideDhaka: 130, freeThreshold: 2500 },
     cart: loadCart(), saved: loadWishlist(), modal: null,
     product: null, size: '', quantity: 1, search: '', order: null,
   };
@@ -56,45 +60,46 @@
     const items = state.cart.map(item => ({ ...item, product: findProduct(item.id) }));
     const count = items.reduce((total, item) => total + item.quantity, 0);
     const subtotal = items.reduce((total, item) => total + item.quantity * item.product.price, 0);
-    const delivery = subtotal > 0 && subtotal < 2500 ? 80 : 0;
+    const delivery = subtotal > 0 && subtotal < state.shipping.freeThreshold ? (state.deliveryZone === 'outside' ? state.shipping.outsideDhaka : state.shipping.insideDhaka) : 0;
     return { items, count, subtotal, delivery, total: subtotal + delivery };
   }
 
   function updateHeader() {
     const { count } = bagSummary();
-    document.querySelector('.bag-count').textContent = count;
-    document.getElementById('bag-button').setAttribute('aria-label', `Open shopping bag, ${count} items`);
-    document.getElementById('wishlist-button').setAttribute('aria-label', `View wishlist, ${state.saved.length} saved items`);
-    document.querySelector('.saved-indicator').hidden = state.saved.length === 0;
+    if (document.querySelector('.bag-count')) document.querySelector('.bag-count').textContent = count;
+    document.getElementById('bag-button')?.setAttribute('aria-label', `Open shopping bag, ${count} items`);
+    document.getElementById('wishlist-button')?.setAttribute('aria-label', `View wishlist, ${state.saved.length} saved items`);
+    if (document.querySelector('.saved-indicator')) document.querySelector('.saved-indicator').hidden = state.saved.length === 0;
   }
 
   function productCard(product) {
     const saved = state.saved.includes(product.id);
     return `<article class="product-card">
       <div class="product-image-wrap">
-        <button class="product-image-link" data-action="product" data-id="${product.id}" aria-label="View ${escapeHTML(product.name)}"><img class="product-image" src="${product.image}" alt="${escapeHTML(product.name)}" loading="lazy"></button>
+        <a class="product-image-link" href="product.html?id=${product.id}" aria-label="View ${escapeHTML(product.name)}"><img class="product-image" src="${product.image}" alt="${escapeHTML(product.name)}" loading="lazy"></a>
         ${product.badge ? `<span class="product-badge ${product.originalPrice ? 'badge-sale' : ''}">${escapeHTML(product.badge)}</span>` : ''}
         <button class="wishlist-button ${saved ? 'is-saved' : ''}" data-action="save" data-id="${product.id}" aria-label="${saved ? 'Remove' : 'Save'} ${escapeHTML(product.name)} ${saved ? 'from' : 'to'} wishlist" aria-pressed="${saved}">${icon('heart', 18, '', saved)}</button>
         <button class="quick-add" data-action="product" data-id="${product.id}">Choose your size ${icon('plus', 17)}</button>
       </div>
-      <div class="product-details"><div class="product-category">${escapeHTML(product.category)}</div><button class="product-name" data-action="product" data-id="${product.id}">${escapeHTML(product.name)}</button>
+      <div class="product-details"><div class="product-category">${escapeHTML(product.category)}</div><a class="product-name" href="product.html?id=${product.id}">${escapeHTML(product.name)}</a>
         <div class="product-bottom"><div class="product-price">${formatPrice(product.price)} ${product.originalPrice ? `<span class="original-price">${formatPrice(product.originalPrice)}</span>` : ''}</div><div class="color-swatches" aria-label="Color palette">${product.colors.map((color, index) => `<span title="${escapeHTML(color.name)}" class="swatch ${index === 0 ? 'selected' : ''}" style="background-color:${color.value}"></span>`).join('')}</div></div>
       </div>
     </article>`;
   }
 
   function renderCollection() {
+    if (!document.getElementById('product-grid')) return;
     const shown = products.filter(product => (state.category === 'All products' || product.category === state.category)
-      && (!state.savedOnly || state.saved.includes(product.id)));
+      && (!state.savedOnly || state.saved.includes(product.id)) && (!state.saleOnly || product.originalPrice > product.price));
     if (state.sort === 'price-low') shown.sort((a, b) => a.price - b.price);
     if (state.sort === 'price-high') shown.sort((a, b) => b.price - a.price);
     if (state.sort === 'name') shown.sort((a, b) => a.name.localeCompare(b.name));
     document.getElementById('product-grid').innerHTML = shown.map(productCard).join('');
     document.getElementById('collection-count').textContent = `${shown.length} good-looking essentials`;
-    document.getElementById('collection-heading').textContent = state.savedOnly ? 'Your saved favorites.' : 'Meet your new favorites.';
+    document.getElementById('collection-heading').textContent = state.savedOnly ? 'Your saved favorites.' : state.saleOnly ? 'The good deals.' : 'Meet your new favorites.';
     document.getElementById('saved-filter').hidden = !state.savedOnly;
     document.getElementById('empty-collection').hidden = shown.length > 0;
-    document.getElementById('sort-products').value = state.sort;
+    if (document.getElementById('sort-products')) document.getElementById('sort-products').value = state.sort;
     document.querySelectorAll('[data-action="filter"]').forEach(button => {
       const active = button.dataset.category === state.category;
       button.classList.toggle('active', active);
@@ -103,11 +108,12 @@
   }
 
   function shop(category = 'All products', options = {}) {
-    state.category = categories.some(item => item.name === category) ? category : 'All products';
-    state.savedOnly = Boolean(options.savedOnly);
-    if (state.modal) closeModal();
-    renderCollection();
-    document.getElementById('shop').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (options.savedOnly) { location.href = 'wishlist.html'; return; }
+    const params = new URLSearchParams();
+    if (categories.some(item => item.name === category)) params.set('category', category);
+    if (state.sort !== 'featured') params.set('sort', state.sort);
+    if (state.saleOnly) params.set('sale', '1');
+    location.href = 'shop.html' + (params.size ? '?' + params.toString() : '');
   }
 
   function toggleSaved(id) {
@@ -117,7 +123,7 @@
     updateHeader();
     if (state.savedOnly) {
       renderCollection();
-      (document.querySelector('.wishlist-button') || document.querySelector('[data-action="clear-wishlist-filter"]')).focus({ preventScroll: true });
+      (document.querySelector('.wishlist-button') || document.querySelector('[data-action="clear-wishlist-filter"]'))?.focus({ preventScroll: true });
     } else {
       document.querySelectorAll(`[data-action="save"][data-id="${id}"]`).forEach(button => {
         const saved = state.saved.includes(id);
@@ -127,6 +133,7 @@
         button.innerHTML = icon('heart', 18, '', saved);
       });
     }
+    document.dispatchEvent(new CustomEvent('store:changed'));
   }
 
   function notify(message) {
@@ -197,12 +204,15 @@
       return;
     }
     const product = state.product;
+    const available = availableStock(product, state.size);
     const existing = state.cart.find(item => item.id === product.id && item.size === state.size);
+    if (available !== null && (existing?.quantity || 0) + state.quantity > available) return notify('That size does not have enough stock.');
     if (existing && existing.quantity + state.quantity > 10) return notify('You can add up to 10 of each size.');
     if (existing) existing.quantity += state.quantity;
     else state.cart.push({ id: product.id, size: state.size, quantity: state.quantity });
     persist();
     updateHeader();
+    document.dispatchEvent(new CustomEvent('store:changed'));
     openModal('cart');
     notify('Good choice. Added to your bag.');
   }
@@ -210,11 +220,14 @@
   function changeBagQuantity(id, size, change) {
     const item = state.cart.find(row => row.id === id && row.size === size);
     if (!item || item.quantity + change > 10) return;
+    const available = availableStock(findProduct(id), size);
+    if (available !== null && item.quantity + change > available) return notify('There is no more stock in that size.');
     item.quantity += change;
     state.cart = state.cart.filter(row => row.quantity > 0);
     persist();
     updateHeader();
-    renderModal(true);
+    if (state.modal) renderModal(true);
+    document.dispatchEvent(new CustomEvent('store:changed'));
   }
 
   function renderSearchResults() {
@@ -223,7 +236,7 @@
     modalRoot.querySelector('.search-hint').textContent = query
       ? `${matches.length} result${matches.length === 1 ? '' : 's'} for “${state.search}”` : 'A few favorites to get you started';
     modalRoot.querySelector('.search-results').innerHTML = (query ? matches : products.slice(0, 4)).map(product =>
-      `<button class="search-result" data-action="product" data-id="${product.id}"><img class="search-result-image" src="${product.image}" alt=""><span><small>${escapeHTML(product.category)}</small><strong>${escapeHTML(product.name)}</strong><span>${formatPrice(product.price)}</span></span>${icon('arrow-up-right', 18)}</button>`).join('');
+      `<a class="search-result" href="product.html?id=${product.id}"><img class="search-result-image" src="${product.image}" alt=""><span><small>${escapeHTML(product.category)}</small><strong>${escapeHTML(product.name)}</strong><span>${formatPrice(product.price)}</span></span>${icon('arrow-up-right', 18)}</a>`).join('');
     modalRoot.querySelector('.search-empty').hidden = matches.length > 0;
   }
 
@@ -237,7 +250,7 @@
           <div class="size-options">${product.sizes.map(size => `<button class="size-option" data-action="size" data-size="${escapeHTML(size)}" aria-pressed="false">${escapeHTML(size)}</button>`).join('')}</div>
           <p class="field-error" role="alert" hidden>Please choose your size.</p>
           <div class="product-modal-actions"><div class="quantity-control"><button data-action="product-minus" aria-label="Decrease quantity" disabled>${icon('minus', 14)}</button><span class="product-quantity">1</span><button data-action="product-plus" aria-label="Increase quantity">${icon('plus', 14)}</button></div><button class="button button-dark" data-action="add">Add to bag ${icon('bag', 17)}</button></div>
-          <ul class="detail-list"><li>${icon('truck', 17)} Delivery across Bangladesh</li><li>${icon('rotate', 17)} Easy 7-day exchanges</li><li>${icon('shield', 17)} Cash on delivery available</li></ul>
+          <ul class="detail-list"><li>${icon('truck', 17)} Delivery across Bangladesh</li><li>${icon('rotate', 17)} Read our exchange policy</li><li>${icon('shield', 17)} Cash on delivery available</li></ul>
         </div>
       </div>` };
   }
@@ -245,40 +258,20 @@
   function cartContent() {
     const bag = bagSummary();
     return { title: `Your bag (${bag.count})`, body: `<div class="drawer-body">${bag.items.length ? `
-      <div class="shipping-progress"><p>${bag.subtotal >= 2500 ? `${icon('check', 16)} Your order qualifies for free delivery!` : `You’re <strong>${formatPrice(2500 - bag.subtotal)}</strong> away from free delivery.`}</p><div class="progress-track"><div class="progress-fill" style="width:${Math.min(bag.subtotal / 2500 * 100, 100)}%"></div></div></div>
+      <div class="shipping-progress"><p>${bag.subtotal >= state.shipping.freeThreshold ? `${icon('check', 16)} Your order qualifies for free delivery!` : `You’re <strong>${formatPrice(state.shipping.freeThreshold - bag.subtotal)}</strong> away from free delivery.`}</p><div class="progress-track"><div class="progress-fill" style="width:${Math.min(bag.subtotal / state.shipping.freeThreshold * 100, 100)}%"></div></div></div>
       ${bag.items.map(item => `<article class="cart-line"><img class="cart-line-image" src="${item.product.image}" alt="${escapeHTML(item.product.name)}"><div class="cart-line-info"><span>${escapeHTML(item.product.category)}</span><h3>${escapeHTML(item.product.name)}</h3><p>Size: ${escapeHTML(item.size)}</p><div class="quantity-control"><button data-action="bag-minus" data-id="${item.id}" data-size="${escapeHTML(item.size)}" aria-label="Decrease ${escapeHTML(item.product.name)} quantity">${icon('minus', 12)}</button><span>${item.quantity}</span><button data-action="bag-plus" data-id="${item.id}" data-size="${escapeHTML(item.size)}" aria-label="Increase ${escapeHTML(item.product.name)} quantity" ${item.quantity >= 10 ? 'disabled' : ''}>${icon('plus', 12)}</button></div></div><div class="cart-line-price"><strong>${formatPrice(item.product.price * item.quantity)}</strong><button class="remove-item" data-action="remove" data-id="${item.id}" data-size="${escapeHTML(item.size)}" aria-label="Remove ${escapeHTML(item.product.name)}">${icon('trash', 15)}</button></div></article>`).join('')}` : `
       <div class="empty-cart">${icon('bag', 44)}<h3>Your next good fit starts here.</h3><p>Your bag is waiting for something you love.</p><button class="button button-dark" data-action="shop">Find your favorites ${icon('arrow-right', 17)}</button></div>`}</div>
-      ${bag.items.length ? `<div class="drawer-footer"><div class="cart-totals"><span>Subtotal</span><strong>${formatPrice(bag.subtotal)}</strong></div><div class="cart-totals"><span>Delivery</span><span>${bag.delivery ? formatPrice(bag.delivery) : 'On us'}</span></div><div class="cart-total"><span>Total</span><strong>${formatPrice(bag.total)}</strong></div><button class="button button-dark button-full" data-action="checkout">Continue to checkout ${icon('arrow-right', 18)}</button><p class="cart-note">${icon('shield', 13)} Demo checkout · No payment is collected</p></div>` : ''}` };
+      ${bag.items.length ? `<div class="drawer-footer"><div class="cart-totals"><span>Subtotal</span><strong>${formatPrice(bag.subtotal)}</strong></div><div class="cart-totals"><span>Delivery</span><span>${bag.delivery ? formatPrice(bag.delivery) : 'On us'}</span></div><div class="cart-total"><span>Total</span><strong>${formatPrice(bag.total)}</strong></div><a class="text-link" href="cart.html">View and edit your bag</a><button class="button button-dark button-full" data-action="checkout">Continue to checkout ${icon('arrow-right', 18)}</button><p class="cart-note">${icon('shield', 13)} Cash on delivery · Confirm delivery at checkout</p></div>` : ''}` };
   }
 
-  function checkoutContent() {
-    const bag = bagSummary();
-    return { title: 'The last little step', className: 'checkout-modal', body: `<div class="modal-body"><p class="checkout-intro">Try the checkout experience. This is a demo; no real order or payment will be created.</p>
-      <form class="checkout-form" id="checkout-form"><label class="form-field">Full name<input name="name" autocomplete="name" placeholder="Your full name" required minlength="2" maxlength="100"></label><div class="field-row"><label class="form-field">Email address<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required maxlength="254"></label><label class="form-field">Phone number<input name="phone" type="tel" autocomplete="tel" placeholder="01XXXXXXXXX" required pattern="[+]?[0-9][0-9 ]{6,18}[0-9]" title="Enter 8–20 digits, optionally starting with + and including spaces"></label></div><label class="form-field">Delivery address<textarea name="address" autocomplete="street-address" placeholder="House, road, area, and city" required minlength="8" maxlength="500" rows="3"></textarea></label>
-      <div class="checkout-payment">${icon('check-circle', 19)}<span><strong>Cash on delivery</strong><small>Demo payment method — nothing is charged</small></span></div><div class="cart-totals"><span>${bag.count} item${bag.count === 1 ? '' : 's'}</span><span>${formatPrice(bag.subtotal)}</span></div><div class="cart-totals"><span>Delivery</span><span>${bag.delivery ? formatPrice(bag.delivery) : 'Free'}</span></div><div class="cart-total"><span>Total</span><strong>${formatPrice(bag.total)}</strong></div><button class="button button-dark button-full" type="submit">Place demo order ${icon('arrow-right', 18)}</button><button class="text-link checkout-back" type="button" data-action="cart">Back to your bag</button></form></div>` };
-  }
-
-  const information = {
-    'Our story': ['GOOD CLOTHES. GOOD ENERGY.', 'RICHKID is a storefront concept for everyday essentials with a little more personality. Discover easy fits, considered colors, and the pieces you reach for again and again.', 'This website is an independent design demonstration inspired by a fashion shopping experience. It is not the official richkidbd.com store.'],
-    'Shipping & delivery': ['FROM OUR BAG TO YOUR DOOR.', 'This demo uses a ৳80 standard delivery charge across Bangladesh, with free delivery on merchandise orders of ৳2,500 or more.', 'A production store would confirm service areas, delivery dates, and tracking after an order is accepted. No real shipments are created here.'],
-    'Returns & exchanges': ['FIND YOUR PERFECT FIT.', 'The sample storefront advertises a 7-day exchange window for unworn items in original condition. Size availability would be confirmed by the store.', 'This is a demonstration policy, not a promise from the official RICHKID store.'],
-    'Contact us': ['LET’S TALK STYLE.', 'Need help choosing a size or finding an everyday essential? This concept includes product details and a shopping bag you can try.', 'Customer support channels and social accounts can be connected when the store is launched.'],
-    'Privacy policy': ['YOUR DETAILS STAY WITH YOU.', 'Your shopping bag and saved items are stored in this browser. The demo checkout and email form do not send your information to a server.', 'You can remove saved data by clearing this site’s browser storage. A full privacy policy is required before collecting customer information in production.'],
-    'Terms of service': ['A FEW THINGS TO KNOW.', 'This is an interactive storefront demonstration. Product listings and prices are sample content. Checkout does not process payments or submit real orders.', 'Images are used to demonstrate the design. Review assets, policies, inventory, and integrations before launching a commercial store.'],
-  };
+  const informationPages = { 'Our story': 'about.html', 'Shipping & delivery': 'shipping.html', 'Returns & exchanges': 'returns.html', 'Contact us': 'contact.html', 'Privacy policy': 'privacy.html', 'Terms of service': 'terms.html' };
 
   function modalContent() {
     if (state.modal === 'product') return productContent();
     if (state.modal === 'cart') return cartContent();
-    if (state.modal === 'checkout') return checkoutContent();
     if (state.modal === 'search') return { title: 'Find your next favorite', className: 'search-modal', body: `<div class="modal-body"><label class="search-input">${icon('search', 22)}<input type="search" placeholder="Try ‘shirt’, ‘relaxed’, or ‘polo’…" aria-label="Search collection"></label><p class="search-hint" aria-live="polite"></p><div class="search-results"></div><div class="empty-state search-empty" hidden>${icon('search', 27)}<h3>No matches just yet.</h3><p>Try a category like shirts, polos, or trousers.</p><button class="text-link" data-action="clear-search">Clear search ${icon('x', 14)}</button></div></div>` };
     if (state.modal === 'menu') return { title: 'Explore RICHKID', className: 'mobile-navigation', body: `<nav aria-label="Mobile navigation"><button data-action="shop">New arrivals ${icon('arrow-up-right')}</button>${categories.map(category => `<button data-action="shop" data-category="${escapeHTML(category.name)}">${escapeHTML(category.name)}${icon('arrow-up-right')}</button>`).join('')}<button data-action="wishlist">Your wishlist ${icon('heart')}</button></nav><p>YOUR STYLE. YOUR WAY. ALWAYS RICHKID.</p>` };
-    if (state.modal === 'success') {
-      const order = state.order;
-      return { title: 'Looking good!', body: `<div class="modal-body order-success">${icon('check-circle', 55)}<p class="eyebrow">DEMO ORDER COMPLETE</p><h2>Great choices, ${escapeHTML(order.name)}.</h2><p>You’ve completed the shopping experience.<br>No real order was sent and no payment was taken.</p><div class="order-summary"><span>Reference <strong>${order.reference}</strong></span><span>${order.count} item${order.count === 1 ? '' : 's'} <strong>${formatPrice(order.total)}</strong></span></div><button class="button button-dark" data-action="shop">Keep the good fits coming ${icon('arrow-right', 17)}</button></div>` };
-    }
-    const details = information[state.modal];
-    return { title: state.modal, body: `<div class="modal-body info-content"><h3>${details[0]}</h3>${details.slice(1).map(paragraph => `<p>${escapeHTML(paragraph)}</p>`).join('')}</div>` };
+    return { title: 'Store', body: '<div class="modal-body"><a href="shop.html">Explore the collection</a></div>' };
   }
 
   document.addEventListener('click', event => {
@@ -288,9 +281,9 @@
     const { action, category, size, info } = trigger.dataset;
     const id = Number(trigger.dataset.id);
     switch (action) {
-      case 'home': window.scrollTo({ top: 0, behavior: 'smooth' }); break;
+      case 'home': location.href = 'index.html'; break;
       case 'shop': shop(category); break;
-      case 'deals': state.sort = 'price-low'; shop(); break;
+      case 'deals': state.saleOnly = true; state.sort = 'price-low'; shop(); break;
       case 'filter': state.category = category; renderCollection(); break;
       case 'wishlist': shop('All products', { savedOnly: true }); break;
       case 'clear-wishlist-filter': state.savedOnly = false; state.category = 'All products'; renderCollection(); break;
@@ -300,7 +293,7 @@
       case 'menu': openModal('menu'); break;
       case 'cart': openModal('cart'); break;
       case 'close': closeModal(); break;
-      case 'info': if (Object.hasOwn(information, info)) openModal(info); break;
+      case 'info': if (Object.hasOwn(informationPages, info)) location.href = informationPages[info]; break;
       case 'product': showProduct(id); break;
       case 'save': toggleSaved(id); break;
       case 'size':
@@ -320,8 +313,8 @@
       case 'add': addToBag(); break;
       case 'bag-minus': changeBagQuantity(id, size, -1); break;
       case 'bag-plus': changeBagQuantity(id, size, 1); break;
-      case 'remove': state.cart = state.cart.filter(item => !(item.id === id && item.size === size)); persist(); updateHeader(); renderModal(true); break;
-      case 'checkout': if (state.cart.length) openModal('checkout'); break;
+      case 'remove': removeItem(id, size); break;
+      case 'checkout': if (state.cart.length) location.href = 'checkout.html'; break;
       default: break;
     }
   });
@@ -339,22 +332,7 @@
     if (event.target.id === 'newsletter-form') {
       event.preventDefault();
       if (!event.target.reportValidity()) return;
-      document.getElementById('newsletter-signup').innerHTML = `<div class="newsletter-success" role="status">${icon('check-circle', 26)}<div><strong>You’re on the list.</strong><p>Thanks for trying the signup. This demo stores no email addresses.</p></div></div>`;
-    }
-    if (event.target.id === 'checkout-form') {
-      event.preventDefault();
-      const form = event.target;
-      const nameInput = form.elements.namedItem('name');
-      const addressInput = form.elements.namedItem('address');
-      nameInput.setCustomValidity(nameInput.value.trim().length >= 2 ? '' : 'Please enter your full name.');
-      addressInput.setCustomValidity(addressInput.value.trim().length >= 8 ? '' : 'Please enter a complete delivery address.');
-      if (!form.reportValidity() || !state.cart.length) return;
-      const bag = bagSummary();
-      state.order = { reference: `RK-${Date.now().toString().slice(-6)}`, name: nameInput.value.trim().split(/\s+/)[0], total: bag.total, count: bag.count };
-      state.cart = [];
-      persist();
-      updateHeader();
-      openModal('success');
+      document.getElementById('newsletter-signup').innerHTML = `<div class="newsletter-success" role="status">${icon('check-circle', 26)}<div><strong>Updates are not open yet.</strong><p>No email address was saved. Visit our contact page for available support.</p></div></div>`;
     }
   });
 
@@ -370,8 +348,97 @@
     }
   });
 
-  document.getElementById('current-year').textContent = new Date().getFullYear();
+  function availableStock(product, size) {
+    if (!state.orderingEnabled) return null;
+    return Number.isInteger(product?.stock?.[size]) ? product.stock[size] : 0;
+  }
+
+  function removeItem(id, size) {
+    state.cart = state.cart.filter(item => !(item.id === id && item.size === size));
+    persist();
+    updateHeader();
+    if (state.modal) renderModal(true);
+    document.dispatchEvent(new CustomEvent('store:changed'));
+  }
+
+  async function api(path, options = {}) {
+    let response;
+    try {
+      response = await fetch('api/' + path, {
+        ...options,
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json', ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers },
+        body: options.body ? JSON.stringify(options.body) : undefined,
+      });
+    } catch {
+      throw new Error('The store could not be reached. Check your connection and try again.');
+    }
+    if (!response.headers.get('content-type')?.includes('application/json')) throw new Error('Online ordering is not available on this host.');
+    const result = await response.json();
+    if (!response.ok) {
+      const error = new Error(result.error || 'The request could not be completed.');
+      error.code = result.code;
+      error.status = response.status;
+      error.details = result.details;
+      throw error;
+    }
+    return result;
+  }
+
+  async function refreshCatalog() {
+    try {
+      const data = await api('catalog');
+      if (!Array.isArray(data.products)) throw new Error('The store catalog is unavailable.');
+      data.products.forEach(product => {
+        const local = findProduct(product.id);
+        if (local) Object.assign(local, product);
+      });
+      state.backend = true;
+      state.orderingEnabled = data.orderingEnabled === true;
+      if (data.shipping) state.shipping = data.shipping;
+    } catch {
+      state.backend = false;
+      state.orderingEnabled = false;
+    }
+    const banner = document.getElementById('launch-status-banner');
+    if (banner) {
+      banner.hidden = state.orderingEnabled;
+      banner.textContent = 'Store preview — online orders are not being accepted yet.';
+    }
+    renderCollection();
+    document.dispatchEvent(new CustomEvent('store:ready'));
+  }
+
+  document.querySelectorAll('[data-store-name]').forEach(element => { element.textContent = config.name || 'RICHKID'; });
+  document.querySelectorAll('[data-store-email]').forEach(element => { element.textContent = config.email || 'Email support will be announced before launch.'; });
+  document.querySelectorAll('[data-store-phone]').forEach(element => { element.textContent = config.phone || 'Phone support will be announced before launch.'; });
+  document.querySelectorAll('[data-store-address]').forEach(element => { element.textContent = config.address || 'Store address will be announced before launch.'; });
+
+  window.RichkidStore = {
+    state, products, categories, config, formatPrice, escapeHTML, icon, api,
+    findProduct, productCard, bagSummary, notify, availableStock, removeItem,
+    changeQuantity: changeBagQuantity, refreshCatalog,
+    addItem(product, size, quantity) {
+      if (!product?.sizes.includes(size) || !Number.isInteger(quantity) || quantity < 1 || quantity > 10) return false;
+      state.product = product;
+      state.size = size;
+      state.quantity = quantity;
+      const before = bagSummary().count;
+      addToBag();
+      return bagSummary().count > before;
+    },
+    clearBag() {
+      state.cart = [];
+      persist();
+      updateHeader();
+      document.dispatchEvent(new CustomEvent('store:changed'));
+    },
+    setDeliveryZone(zone) { state.deliveryZone = zone === 'outside' ? 'outside' : 'dhaka'; },
+  };
+
+  if (document.getElementById('current-year')) document.getElementById('current-year').textContent = new Date().getFullYear();
   persist();
   updateHeader();
   renderCollection();
+  refreshCatalog();
 })();

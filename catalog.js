@@ -1,183 +1,396 @@
+/* Generated from catalog-data.json by php tools/sync-catalog.php. */
 (function () {
   'use strict';
-
-const categories = [
-  { name: 'T-Shirts', image: 'images/product-2.png' },
-  { name: 'Shirts', image: 'images/product-1.png' },
-  { name: 'Polos', image: 'images/product-3.png' },
-  { name: 'Trousers', image: 'images/product-4.png' },
+  const products = [
+    {
+        "id": 1,
+        "name": "The Everyday Oxford",
+        "category": "Shirts",
+        "price": 1490,
+        "originalPrice": 1790,
+        "badge": "BESTSELLER",
+        "image": "images/product-1.png",
+        "images": [
+            "images/product-1.png"
+        ],
+        "description": "An easy, relaxed shirt in a soft dusty-pink finish. Clean lines, breathable fabric, and all-day comfort. Your everyday, elevated.",
+        "colors": [
+            {
+                "name": "Dusty pink",
+                "value": "#d7b7ad"
+            },
+            {
+                "name": "Off-white",
+                "value": "#ede9e0"
+            },
+            {
+                "name": "Navy",
+                "value": "#24354a"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": true
+    },
+    {
+        "id": 2,
+        "name": "Essential Cotton Tee",
+        "category": "T-Shirts",
+        "price": 690,
+        "badge": "NEW",
+        "image": "images/product-2.png",
+        "images": [
+            "images/product-2.png"
+        ],
+        "description": "The foundation of a good wardrobe. A clean crew neck, comfortable regular fit, and soft cotton feel that works with everything.",
+        "colors": [
+            {
+                "name": "White",
+                "value": "#f7f6f2"
+            },
+            {
+                "name": "Black",
+                "value": "#292a29"
+            },
+            {
+                "name": "Sage",
+                "value": "#899381"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": true
+    },
+    {
+        "id": 3,
+        "name": "Heritage Stripe Rugby Polo",
+        "category": "Polos",
+        "price": 1690,
+        "image": "images/product-3.png",
+        "images": [
+            "images/product-3.png"
+        ],
+        "description": "A sporting classic, reimagined for the everyday. A contrasting sage stripe, neat collar, and relaxed silhouette make this an instant favourite.",
+        "colors": [
+            {
+                "name": "Ecru / sage",
+                "value": "#8d9789"
+            },
+            {
+                "name": "Ecru / navy",
+                "value": "#2d3a48"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": true
+    },
+    {
+        "id": 4,
+        "name": "Everyday Slim Chino",
+        "category": "Trousers",
+        "price": 1590,
+        "originalPrice": 1890,
+        "badge": "POPULAR",
+        "image": "images/product-4.png",
+        "images": [
+            "images/product-4.png"
+        ],
+        "description": "A considered everyday essential with a neat, tapered leg. Easy to dress up, just as easy to keep casual.",
+        "colors": [
+            {
+                "name": "Black",
+                "value": "#292a29"
+            },
+            {
+                "name": "Stone",
+                "value": "#c3b9a3"
+            },
+            {
+                "name": "Navy",
+                "value": "#2c3a4d"
+            }
+        ],
+        "sizes": [
+            "28",
+            "30",
+            "32",
+            "34",
+            "36"
+        ],
+        "featured": true
+    },
+    {
+        "id": 5,
+        "name": "Weekend Resort Shirt",
+        "category": "Shirts",
+        "price": 1290,
+        "badge": "NEW",
+        "image": "images/product-5.png",
+        "images": [
+            "images/product-5.png"
+        ],
+        "description": "An effortless short-sleeve layer in a deep navy shade. Wear it open over your favourite tee or button it up for a clean finish.",
+        "colors": [
+            {
+                "name": "Navy",
+                "value": "#283a53"
+            },
+            {
+                "name": "Olive",
+                "value": "#6f765e"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": false
+    },
+    {
+        "id": 6,
+        "name": "Signature Pocket Tee",
+        "category": "T-Shirts",
+        "price": 790,
+        "image": "images/product-6.png",
+        "images": [
+            "images/product-6.png"
+        ],
+        "description": "A navy crew-neck tee with a considered pocket detail. An easy regular fit makes it a staple for wherever the day takes you.",
+        "colors": [
+            {
+                "name": "Midnight",
+                "value": "#222d40"
+            },
+            {
+                "name": "White",
+                "value": "#f7f6f2"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": false
+    },
+    {
+        "id": 7,
+        "name": "Micro Print Casual Shirt",
+        "category": "Shirts",
+        "price": 1390,
+        "originalPrice": 1690,
+        "image": "images/product-7.png",
+        "images": [
+            "images/product-7.png"
+        ],
+        "description": "A subtle all-over pattern gives a wardrobe classic a fresh point of view. Light, versatile, and made for the days that turn into evenings.",
+        "colors": [
+            {
+                "name": "Natural",
+                "value": "#dcd7cc"
+            },
+            {
+                "name": "Blue",
+                "value": "#8c9ba9"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": false
+    },
+    {
+        "id": 8,
+        "name": "Utility Cargo Trouser",
+        "category": "Trousers",
+        "price": 1890,
+        "badge": "NEW",
+        "image": "images/product-8.png",
+        "images": [
+            "images/product-8.png"
+        ],
+        "description": "Practical pocket details meet a contemporary tapered fit. A versatile grey utility trouser for slow weekends and busy city days.",
+        "colors": [
+            {
+                "name": "Grey",
+                "value": "#9d9b98"
+            },
+            {
+                "name": "Olive",
+                "value": "#696e58"
+            },
+            {
+                "name": "Black",
+                "value": "#292a29"
+            }
+        ],
+        "sizes": [
+            "28",
+            "30",
+            "32",
+            "34",
+            "36"
+        ],
+        "featured": false
+    },
+    {
+        "id": 9,
+        "name": "Vintage Raglan Tee",
+        "category": "T-Shirts",
+        "price": 890,
+        "originalPrice": 1090,
+        "image": "images/product-9.png",
+        "images": [
+            "images/product-9.png"
+        ],
+        "description": "A little nostalgia, a lot of everyday comfort. A relaxed raglan tee with contrast sleeves and a vintage-inspired chest graphic.",
+        "colors": [
+            {
+                "name": "Oat / burgundy",
+                "value": "#7a3c3d"
+            },
+            {
+                "name": "Oat / black",
+                "value": "#353431"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": false
+    },
+    {
+        "id": 10,
+        "name": "City Cropped Chino",
+        "category": "Trousers",
+        "price": 1690,
+        "image": "images/product-10.png",
+        "images": [
+            "images/product-10.png"
+        ],
+        "description": "A clean cropped silhouette in timeless navy. Pair with a white tee and trainers for your easiest outfit of the week.",
+        "colors": [
+            {
+                "name": "Navy",
+                "value": "#2b3e53"
+            },
+            {
+                "name": "Sand",
+                "value": "#c1b19a"
+            }
+        ],
+        "sizes": [
+            "28",
+            "30",
+            "32",
+            "34",
+            "36"
+        ],
+        "featured": false
+    },
+    {
+        "id": 11,
+        "name": "Sport Graphic Tee",
+        "category": "T-Shirts",
+        "price": 990,
+        "badge": "LIMITED",
+        "image": "images/product-11.png",
+        "images": [
+            "images/product-11.png"
+        ],
+        "description": "A bold athletic graphic on an easy black crew-neck tee. Made to be the finishing touch to your off-duty uniform.",
+        "colors": [
+            {
+                "name": "Black",
+                "value": "#262726"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": false
+    },
+    {
+        "id": 12,
+        "name": "Fresh Logo Cotton Tee",
+        "category": "T-Shirts",
+        "price": 890,
+        "image": "images/product-12.png",
+        "images": [
+            "images/product-12.png"
+        ],
+        "description": "A fresh turquoise graphic brings a pop of colour to a crisp white tee. A soft, easy layer for your everyday rotation.",
+        "colors": [
+            {
+                "name": "White / mint",
+                "value": "#8ecbd0"
+            },
+            {
+                "name": "Black",
+                "value": "#292a29"
+            }
+        ],
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "featured": false
+    }
 ];
-
-const apparelSizes = ['S', 'M', 'L', 'XL', 'XXL'];
-const trouserSizes = ['28', '30', '32', '34', '36'];
-
-const products = [
-  {
-    id: 1,
-    name: 'The Everyday Oxford',
-    category: 'Shirts',
-    price: 1490,
-    originalPrice: 1790,
-    badge: 'BESTSELLER',
-    image: 'images/product-1.png',
-    images: ['images/product-1.png'],
-    description: 'An easy, relaxed shirt in a soft dusty-pink finish. Clean lines, breathable fabric, and all-day comfort. Your everyday, elevated.',
-    colors: [{ name: 'Dusty pink', value: '#d7b7ad' }, { name: 'Off-white', value: '#ede9e0' }, { name: 'Navy', value: '#24354a' }],
-    sizes: apparelSizes,
-    featured: true,
-  },
-  {
-    id: 2,
-    name: 'Essential Cotton Tee',
-    category: 'T-Shirts',
-    price: 690,
-    badge: 'NEW',
-    image: 'images/product-2.png',
-    images: ['images/product-2.png'],
-    description: 'The foundation of a good wardrobe. A clean crew neck, comfortable regular fit, and soft cotton feel that works with everything.',
-    colors: [{ name: 'White', value: '#f7f6f2' }, { name: 'Black', value: '#292a29' }, { name: 'Sage', value: '#899381' }],
-    sizes: apparelSizes,
-    featured: true,
-  },
-  {
-    id: 3,
-    name: 'Heritage Stripe Rugby Polo',
-    category: 'Polos',
-    price: 1690,
-    image: 'images/product-3.png',
-    images: ['images/product-3.png'],
-    description: 'A sporting classic, reimagined for the everyday. A contrasting sage stripe, neat collar, and relaxed silhouette make this an instant favourite.',
-    colors: [{ name: 'Ecru / sage', value: '#8d9789' }, { name: 'Ecru / navy', value: '#2d3a48' }],
-    sizes: apparelSizes,
-    featured: true,
-  },
-  {
-    id: 4,
-    name: 'Everyday Slim Chino',
-    category: 'Trousers',
-    price: 1590,
-    originalPrice: 1890,
-    badge: 'POPULAR',
-    image: 'images/product-4.png',
-    images: ['images/product-4.png'],
-    description: 'A considered everyday essential with a neat, tapered leg. Easy to dress up, just as easy to keep casual.',
-    colors: [{ name: 'Black', value: '#292a29' }, { name: 'Stone', value: '#c3b9a3' }, { name: 'Navy', value: '#2c3a4d' }],
-    sizes: trouserSizes,
-    featured: true,
-  },
-  {
-    id: 5,
-    name: 'Weekend Resort Shirt',
-    category: 'Shirts',
-    price: 1290,
-    badge: 'NEW',
-    image: 'images/product-5.png',
-    images: ['images/product-5.png'],
-    description: 'An effortless short-sleeve layer in a deep navy shade. Wear it open over your favourite tee or button it up for a clean finish.',
-    colors: [{ name: 'Navy', value: '#283a53' }, { name: 'Olive', value: '#6f765e' }],
-    sizes: apparelSizes,
-    featured: false,
-  },
-  {
-    id: 6,
-    name: 'Signature Pocket Tee',
-    category: 'T-Shirts',
-    price: 790,
-    image: 'images/product-6.png',
-    images: ['images/product-6.png'],
-    description: 'A navy crew-neck tee with a considered pocket detail. An easy regular fit makes it a staple for wherever the day takes you.',
-    colors: [{ name: 'Midnight', value: '#222d40' }, { name: 'White', value: '#f7f6f2' }],
-    sizes: apparelSizes,
-    featured: false,
-  },
-  {
-    id: 7,
-    name: 'Micro Print Casual Shirt',
-    category: 'Shirts',
-    price: 1390,
-    originalPrice: 1690,
-    image: 'images/product-7.png',
-    images: ['images/product-7.png'],
-    description: 'A subtle all-over pattern gives a wardrobe classic a fresh point of view. Light, versatile, and made for the days that turn into evenings.',
-    colors: [{ name: 'Natural', value: '#dcd7cc' }, { name: 'Blue', value: '#8c9ba9' }],
-    sizes: apparelSizes,
-    featured: false,
-  },
-  {
-    id: 8,
-    name: 'Utility Cargo Trouser',
-    category: 'Trousers',
-    price: 1890,
-    badge: 'NEW',
-    image: 'images/product-8.png',
-    images: ['images/product-8.png'],
-    description: 'Practical pocket details meet a contemporary tapered fit. A versatile grey utility trouser for slow weekends and busy city days.',
-    colors: [{ name: 'Grey', value: '#9d9b98' }, { name: 'Olive', value: '#696e58' }, { name: 'Black', value: '#292a29' }],
-    sizes: trouserSizes,
-    featured: false,
-  },
-  {
-    id: 9,
-    name: 'Vintage Raglan Tee',
-    category: 'T-Shirts',
-    price: 890,
-    originalPrice: 1090,
-    image: 'images/product-9.png',
-    images: ['images/product-9.png'],
-    description: 'A little nostalgia, a lot of everyday comfort. A relaxed raglan tee with contrast sleeves and a vintage-inspired chest graphic.',
-    colors: [{ name: 'Oat / burgundy', value: '#7a3c3d' }, { name: 'Oat / black', value: '#353431' }],
-    sizes: apparelSizes,
-    featured: false,
-  },
-  {
-    id: 10,
-    name: 'City Cropped Chino',
-    category: 'Trousers',
-    price: 1690,
-    image: 'images/product-10.png',
-    images: ['images/product-10.png'],
-    description: 'A clean cropped silhouette in timeless navy. Pair with a white tee and trainers for your easiest outfit of the week.',
-    colors: [{ name: 'Navy', value: '#2b3e53' }, { name: 'Sand', value: '#c1b19a' }],
-    sizes: trouserSizes,
-    featured: false,
-  },
-  {
-    id: 11,
-    name: 'Sport Graphic Tee',
-    category: 'T-Shirts',
-    price: 990,
-    badge: 'LIMITED',
-    image: 'images/product-11.png',
-    images: ['images/product-11.png'],
-    description: 'A bold athletic graphic on an easy black crew-neck tee. Made to be the finishing touch to your off-duty uniform.',
-    colors: [{ name: 'Black', value: '#262726' }],
-    sizes: apparelSizes,
-    featured: false,
-  },
-  {
-    id: 12,
-    name: 'Fresh Logo Cotton Tee',
-    category: 'T-Shirts',
-    price: 890,
-    image: 'images/product-12.png',
-    images: ['images/product-12.png'],
-    description: 'A fresh turquoise graphic brings a pop of colour to a crisp white tee. A soft, easy layer for your everyday rotation.',
-    colors: [{ name: 'White / mint', value: '#8ecbd0' }, { name: 'Black', value: '#292a29' }],
-    sizes: apparelSizes,
-    featured: false,
-  },
+  const categories = [
+    {
+        "name": "T-Shirts",
+        "image": "images/product-2.png"
+    },
+    {
+        "name": "Shirts",
+        "image": "images/product-1.png"
+    },
+    {
+        "name": "Polos",
+        "image": "images/product-3.png"
+    },
+    {
+        "name": "Trousers",
+        "image": "images/product-4.png"
+    }
 ];
-
-const formatPrice = (price) => `৳${new Intl.NumberFormat('en-BD', { maximumFractionDigits: 0 }).format(price)}`;
-
-const collectionImages = {
-  hero: 'images/hero.jpg',
-  editorial: 'images/editorial.jpg',
-  'T-Shirts': 'images/product-2.png',
-  Shirts: 'images/product-1.png',
-  Polos: 'images/product-3.png',
-  Trousers: 'images/product-4.png',
-};
-
-window.RichkidCatalog = { products, categories, formatPrice, collectionImages };
+  const formatPrice = price => '৳' + new Intl.NumberFormat('en-BD', { maximumFractionDigits: 0 }).format(price);
+  window.RichkidCatalog = { products, categories, formatPrice };
 })();

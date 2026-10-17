@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="same-origin">
+  <title>Store management · Richkid</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="admin-header">
+    <a class="wordmark" href="index.html" aria-label="Richkid storefront">RICHKID<span aria-hidden="true">.</span></a>
+    <span class="header-label">STORE MANAGEMENT</span>
+    <a class="store-link" href="index.html">View storefront <span aria-hidden="true">↗</span></a>
+    <button class="button button-outline compact" id="logout-button" type="button" hidden>Sign out</button>
+  </header>
+  <main id="main" class="admin-main">
+    <div id="notification" class="notification" role="status" aria-live="polite" hidden></div>
+    <section id="connection-panel" class="connection-panel" aria-labelledby="connection-heading">
+      <p class="eyebrow">SECURE ACCESS</p>
+      <h1 id="connection-heading">Connecting to your store.</h1>
+      <p id="connection-message">Checking the server and your session…</p>
+      <button class="button button-dark" id="connection-retry" type="button" hidden>Try again</button>
+    </section>
+    <section id="login-panel" class="login-panel" aria-labelledby="login-heading" hidden>
+      <div class="login-intro"><p class="eyebrow">YOUR STORE, IN ORDER</p><h1 id="login-heading">Welcome back.</h1><p>Manage orders and keep your inventory up to date.</p></div>
+      <form id="login-form" class="panel login-form">
+        <h2>Administrator sign in</h2>
+        <p class="muted">Use the administrator password configured on your store server.</p>
+        <label for="admin-password">Password</label>
+        <input id="admin-password" name="password" type="password" autocomplete="current-password" required maxlength="1024" aria-describedby="login-error">
+        <p id="login-error" class="form-error" role="alert" hidden></p>
+        <button class="button button-dark" id="login-button" type="submit">Sign in securely <span aria-hidden="true">↗</span></button>
+        <p class="small muted">Store management requires the configured PHP application and MySQL database. A static host cannot receive orders or provide administrator access.</p>
+      </form>
+    </section>
+    <div id="dashboard" hidden>
+      <div class="page-heading"><div><p class="eyebrow">THE BUSINESS SIDE</p><h1>Your store.</h1></div><p class="muted" id="last-refreshed"></p></div>
+      <div class="launch-banner" id="launch-banner" role="status"></div>
+      <nav class="section-nav" aria-label="Management sections">
+        <button type="button" class="section-tab active" data-section="orders" aria-current="page">Orders</button>
+        <button type="button" class="section-tab" data-section="inventory">Inventory</button>
+        <button type="button" class="section-tab" data-section="readiness">Launch readiness</button>
+      </nav>
+      <section id="orders-section" class="dashboard-section" aria-labelledby="orders-heading">
+        <div class="section-heading"><div><h2 id="orders-heading">Orders</h2><p class="muted" id="orders-count">Loading orders…</p></div><div class="actions"><button class="button button-outline compact" id="orders-refresh" type="button">Refresh</button><button class="button button-dark compact" id="export-button" type="button">Export CSV</button></div></div>
+        <div class="filter-bar"><label for="order-status-filter">Order status</label><select id="order-status-filter"><option value="">All statuses</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="processing">Processing</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select><p class="small muted">Cash on delivery · amounts in BDT</p></div>
+        <p id="orders-error" class="form-error" role="alert" hidden></p>
+        <div class="table-wrap panel"><table class="orders-table"><caption class="sr-only">Customer orders, newest first</caption><thead><tr><th scope="col">Order</th><th scope="col">Customer</th><th scope="col">Total</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead><tbody id="orders-body"></tbody></table><p class="empty-state" id="orders-empty" hidden>No orders here yet. New orders will appear when customers complete checkout.</p></div>
+        <div class="pagination"><button class="button button-outline compact" type="button" id="previous-page" disabled>← Previous</button><span class="small" id="page-label">Page 1</span><button class="button button-outline compact" type="button" id="next-page" disabled>Next →</button></div>
+      </section>
+      <section id="inventory-section" class="dashboard-section" aria-labelledby="inventory-heading" hidden>
+        <div class="section-heading"><div><h2 id="inventory-heading">Inventory</h2><p class="muted">Set the actual number of pieces available in each size. Zero means sold out.</p></div><button class="button button-outline compact" id="inventory-refresh" type="button">Refresh inventory</button></div>
+        <div class="notice">Stock is reserved when an order is placed. Cancellation restores it. Set accurate stock before opening checkout; check current orders before making a manual correction.</div>
+        <form id="inventory-form"><p id="inventory-error" class="form-error" role="alert" hidden></p><div id="inventory-products" class="inventory-grid"></div><div class="inventory-save panel"><span id="inventory-changes" class="small muted">No unsaved changes</span><button class="button button-dark" type="submit" id="inventory-save" disabled>Save stock changes</button></div></form>
+      </section>
+      <section id="readiness-section" class="dashboard-section" aria-labelledby="readiness-heading" hidden>
+        <div class="section-heading"><div><h2 id="readiness-heading">Launch readiness</h2><p class="muted">Live server configuration, verified on your latest refresh.</p></div><button class="button button-outline compact" id="readiness-refresh" type="button">Check again</button></div>
+        <div class="panel readiness-panel"><h3 id="readiness-summary">Checking configuration…</h3><ul class="readiness-list" id="readiness-list"></ul><div id="readiness-issues"></div></div>
+        <div class="panel readiness-panel"><h3>Before accepting your first order</h3><p>Replace demonstration products, photography, prices and store details with your own. Confirm stock, delivery charges, returns terms and contact information. Run a complete test order on your deployed HTTPS server, sign in here, and verify the order is saved before opening checkout.</p><p>Launch controls belong in the server environment settings. This page reports their state; it does not enable sales or configure payment accounts.</p><p id="shipping-summary" class="small muted"></p></div>
+      </section>
+    </div>
+  </main>
+  <footer class="admin-footer"><span>RICHKID · STORE MANAGEMENT</span><a href="index.html">Back to the storefront ↗</a></footer>
+  <dialog id="order-dialog" aria-labelledby="order-dialog-title">
+    <div class="dialog-heading"><div><p class="eyebrow">ORDER DETAILS</p><h2 id="order-dialog-title">Order</h2></div><button type="button" id="order-dialog-close" class="close-button" aria-label="Close order details">×</button></div>
+    <div id="order-detail"></div>
+  </dialog>
+</body>
+</html>

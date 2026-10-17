@@ -1,0 +1,8 @@
+Options -Indexes
+<FilesMatch "^(?:config.*\.php|bootstrap\.php|install\.php|schema\.sql|.*\.log)$">
+    Require all denied
+</FilesMatch>
+RewriteEngine On
+RewriteRule ^tests(?:/|$) - [F,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]

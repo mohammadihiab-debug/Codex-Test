@@ -1,0 +1,29 @@
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Keep certificate renewal challenges available to the hosting provider.
+  RewriteRule ^\.well-known/acme-challenge/ - [L]
+  RewriteRule (^|/)\. - [F,L]
+  RewriteRule ^(?:data|backups|tests|tools|docs|node_modules|vendor)(?:/|$) - [F,L,NC]
+  RewriteRule ^(?:README\.md|DEPLOYMENT\.md|LAUNCH\.md|server\.js|\.env.*)$ - [F,L,NC]
+  RewriteRule ^api(?:/.*)?$ api/index.php [END,QSA]
+  # Route unknown paths to a real 404 page, with no directory listing.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule . - [R=404,L]
+</IfModule>
+
+<FilesMatch "(?i)(?:^config\.local\.php$|^config\.example\.php$|\.sql$|\.log$|\.bak$|\.sqlite(?:-shm|-wal)?$|\.env(?:\..*)?$)">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+</IfModule>
+
+ErrorDocument 404 /404.html
